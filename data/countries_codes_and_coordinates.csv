@@ -1,4 +1,4 @@
-"Country","Alpha-2 code","Alpha-3 code","Numeric code","Latitude (average)","Longitude (average)"
+"Country","Alpha_2_code","Alpha_3_code","Numeric_code","Latitude_average","Longitude_average"
 "Afghanistan","AF","AFG","4","33","65"
 "Albania","AL","ALB","8","41","20"
 "Algeria","DZ","DZA","12","28","3"
