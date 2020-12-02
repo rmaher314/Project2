@@ -1,4 +1,4 @@
-BIB,Last Name,First Name,Country,Gender,Division,Swim,Bike,Run,Overall,Division Rank,Gender Rank,Overall Rank,T1,T2
+BIB,Last_Name,First_Name,Country,Gender,Division,Swim,Bike,Run,Overall,Division_Rank,Gender_Rank,Overall_Rank,T1,T2
 4,Frodeno,Jan,DEU,Male,MPRO,0:47:31,4:16:02,2:42:43,7:51:13,1,1,1,0:01:58,0:02:59
 6,O'donnell,Tim,USA,Male,MPRO,0:47:38,4:18:11,2:49:45,7:59:41,2,2,2,0:02:01,0:02:06
 5,Kienle,Sebastian,DEU,Male,MPRO,0:52:17,4:15:04,2:49:56,8:02:04,3,3,3,0:02:12,0:02:35
