@@ -1,10 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>2019 Ironman Analysis
+          
+        </title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="css/d3Style.css">
+    </head>
+    <body>
 
+        <div class="container">
 
-
-
-
+            <!-- Our columns function in rows. -->
+            <div class="row">
+        
+              <!-- Columns have 12 areas of width to work with. -->
+        
+              <!-- One third of screen (4/12) -->
+              <div id= "jumbo" class="col-md-12 jumbotron text-center">
+                <h1><a>2019 Ironman World Championship Analysis </a></h1>
+                        
+               <h2> <img src="Images/2019Logo.jpg" alt="2019Logo" class="right"> </h2>
+                         
+              </div>
+            </div>
+        </div>    
+        <div class="row">
+            <div class="col-md-2">
+              <div class="division_selection">
+                <h5>Select Division:</h5>
+                <select id="selDataset"></select>
+              </div>
+              <div class="panel panel-primary">
+                <div class="panel-heading">
+                  <h3 class="panel-title">Select the Division</h3>
+                </div>
+                <div id="division" class="panel-body"></div>
+              </div>
+            </div>   
+            <div class="row">
+                <div class="col-md-12">
+                  <div id="world"></div>
+                </div>
+            <div class="col-md-6">
+                <div id="bar"></div>
+              </div>
+              <div class="col-md-6">
+                <div id="top10"></div>
+              </div>
+            </div>
+           <br>
+           <br>
+            <footer class="footer mt-auto py-3">
+                <div class="container">
+                  <span class="text-muted">2019 Ironman World Championship Analysis - Copyright 2020 - Produced by Regan Maher, Melissa Memel, Cory Potter, Lance Weston.</span>
+                </div>
+              </footer>
+    </body>
+    </html>
 
 
 

@@ -1,5 +1,5 @@
 h1 {
-  color: rgb(10, 12, 110);
+  color: rgb(219, 17, 51);
   text-align: center;
   font-family: Arial, Helvetica, sans-serif;
   font-weight: bold;
@@ -11,13 +11,16 @@ h2 {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 20pt;
   font-weight: bold;
-
+  background-color: white;
 }
 a {
   align-items: center;
 }
 
-
+.jumbo{
+  background-color: white;
+} 
+}
 
 nav {
   align-content: center;
