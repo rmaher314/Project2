@@ -5,7 +5,7 @@ from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, func
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 
 
 #################################################
@@ -32,8 +32,7 @@ app = Flask(__name__)
 #################################################
 @app.route("/")
 def home():
-    print('Server received request for Home page...')
-    return ("Ironman Analysis")
+    return render_template('index.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
