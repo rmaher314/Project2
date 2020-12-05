@@ -1,6 +1,6 @@
 d3.json("/api/race_stats", function(race_stats) { 
     console.log(race_stats);
-
+});
 // Setting the intial INT run the drop down function.  
 
 // function init(){
@@ -64,26 +64,26 @@ d3.json("/api/race_stats", function(race_stats) {
 // }
 
 //Bar Chart Code
-function updateCharts(id) {
-    console.log("update Charts called for id: " + id)
-    // Use D3 to select the dropdown menu
+// function updateCharts(id) {
+//     console.log("update Charts called for id: " + id)
+//     // Use D3 to select the dropdown menu
       
-    d3.json("/api/race_stats".then((race_stats) => { 
-        raceArray = race_stats.Gender; 
+//     d3.json("/api/race_stats".then((race_stats) => { 
+//         raceArray = race_stats.Gender; 
                             
-                var trace1 ={
-                    x: Gender,
-                    y: Division,
-                    type: "bar",
-                    orientation: 'h'
-                };
+//                 var trace1 ={
+//                     x: Gender,
+//                     y: Division,
+//                     type: "bar",
+                    
+//                 };
 
-                var plotdata = [trace1];
-                var layout = {
-                    title: "Hi"
-                };
+//                 var plotdata = [trace1];
+//                 var layout = {
+//                     title: "Hi"
+//                 };
                         
-                Plotly.newPlot("bar", plotdata, layout);
+//                 Plotly.newPlot("bar", plotdata, layout);
 
                 // var desired_maximum_marker_size = 40;
 
