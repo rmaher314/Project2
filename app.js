@@ -2,23 +2,25 @@
 
 // Setting the intial INT run the drop down function.  
 
-function init(){
-    d3.json("./data/ironman.sqlite").then((data) => {      
-    nameArray = data.names;
-    var ddlItems = document.getElementById("selDataset")
+// function init(){
+//     d3.json("./data/ironman.sqlite").then((data) => {      
+//     nameArray = data.names;
+//     var ddlItems = document.getElementById("selDataset")
 
-        for (var i = 0; i < nameArray.length; i++) {
-            var opt = nameArray[i];
-            var element = document.createElement("option");
-            element.textContent = opt;
-            element.value = opt;
-            ddlItems.appendChild(element);
-          }
-    })    
-}  
+//         for (var i = 0; i < nameArray.length; i++) {
+//             var opt = nameArray[i];
+//             var element = document.createElement("option");
+//             element.textContent = opt;
+//             element.value = opt;
+//             ddlItems.appendChild(element);
+//           }
+//     })    
+// }  
 
-init();
+// init();
 
+d3.json("/api/race_stats", function(race_stats) { 
+    console.log(race_stats);
 
 // Drop Down Menu Event Handler
 d3.selectAll("#selDataset").on("change", updatePage);

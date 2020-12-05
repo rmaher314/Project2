@@ -5,7 +5,7 @@ from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, func
 import pandas as pd
-from config import username, password
+# from config import username, password
 from flask import Flask, jsonify, render_template
 
 
@@ -20,7 +20,7 @@ Base = automap_base()
 Base.prepare(engine, reflect=True)
 
 # Save reference to the table
-Race_Stats = Base.classes.race_stats
+race_stats = Base.classes.race_stats
 
 #################################################
 # Flask Setup
@@ -36,8 +36,8 @@ def home():
     return render_template('index.html')
 
 # this is how we send data to javascript
-@app.route("/api/ironman")
-def race_stats():
+@app.route("/api/race_stats")
+def race_stats_api():
     # create our session(link) from python to the SQL DB
     #session = Session(engine)
 
@@ -57,8 +57,8 @@ def race_stats():
 
     # Create a dictionary from the row data and append to a list of all_race_stats
     all_race_stats = []
-    for Last_Name, First_Name, Country, Gender, Division, Swim, Bike, Run, Overall,
-    Division_Rank, Gender_Rank, Overall_Rank  in results:
+    for BIB, Last_Name, First_Name, Country, Gender, Division, Swim, Bike, Run, Overall, \
+        Division_Rank, Gender_Rank, Overall_Rank, Latitude_average,  Longitude_average in results:
         race_stats_dict = {}
         race_stats_dict["BIB"] = BIB
         race_stats_dict["Last_Name"] = Last_Name
