@@ -38,7 +38,11 @@ def home():
 # this is how we send data to javascript
 @app.route("/api/ironman")
 def race_stats():
-    return pd.read_sql_table("race_stats", engine).to_json(orient="records")
+    # create our session(link) from python to the SQL DB
+    session = Session(engine)
+
+    # Perform necessary queries (reference 10.3)
+    # need to figure out why the Race_Stats table is not saving 
 
 if __name__ == '__main__':
     app.run(debug=True)
