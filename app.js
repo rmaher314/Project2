@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 
 // Setting the intial INT run the drop down function.  
@@ -141,3 +142,21 @@ function updateCharts(id) {
     })
 }
    
+=======
+function init(){
+    d3.json("./samples.json").then((data) => {      
+    nameArray = data.names;
+    var ddlItems = document.getElementById("selDataset")
+
+        for (var i = 0; i < nameArray.length; i++) {
+            var opt = nameArray[i];
+            var element = document.createElement("option");
+            element.textContent = opt;
+            element.value = opt;
+            ddlItems.appendChild(element);
+          }
+    })    
+}  
+
+init();
+>>>>>>> c7b95a8ca6101662d690d824ae9e3b07384b8996
