@@ -20,7 +20,7 @@ Base = automap_base()
 Base.prepare(engine, reflect=True)
 
 # Save reference to the table
-Ironman = Base.classes.ironman
+Race_Stats = Base.classes.race_stats
 
 #################################################
 # Flask Setup
@@ -36,9 +36,9 @@ def home():
     return render_template('index.html')
 
 # this is how we send data to javascript
-@app.route("/api/ironman/getData")
+@app.route("/api/ironman")
 def race_stats():
-    return jsonify()
+    return pd.read_sql_table("race_stats", engine).to_json(orient="records")
 
 if __name__ == '__main__':
     app.run(debug=True)
