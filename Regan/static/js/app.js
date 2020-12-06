@@ -1,24 +1,37 @@
-d3.json("/api/race_stats", function(race_stats) { 
+//This was the original code the next line of code seems to work and out put with no errors.
+// d3.json("/api/race_stats", function(race_stats) { 
+//     console.log(race_stats);
+// });
+
+
+d3.json("/api/race_stats").then((race_stats) => {      
     console.log(race_stats);
-});
+
+}) ;   
+
 // Setting the intial INT run the drop down function.  
 
-// function init(){
-//     d3.json("./data/ironman.sqlite").then((data) => {      
-//     nameArray = data.names;
-//     var ddlItems = document.getElementById("selDataset")
+function init(){
+    d3.json("/api/race_stats").then((race_stats) => {      
+    // divisionArray = race_stats.Division;
+    var ddlItems = document.getElementById("selDataset")
+    var uniqueDivisionArray=[];
+    var opt;
+    for (var i = 0; i < race_stats.length; i++) {
+        opt = race_stats[i].Division;
+        if(!uniqueDivisionArray.includes(opt)){
+            console.log("Unique division name found: " + opt);
+            uniqueDivisionArray.push(opt);
+            var element = document.createElement("option");
+            element.textContent = opt;
+            element.value = opt;
+            ddlItems.appendChild(element);
+        }        
+    }
+    })    
+}  
 
-//         for (var i = 0; i < nameArray.length; i++) {
-//             var opt = nameArray[i];
-//             var element = document.createElement("option");
-//             element.textContent = opt;
-//             element.value = opt;
-//             ddlItems.appendChild(element);
-//           }
-//     })    
-// }  
-
-// init();
+init();
 
 
 
