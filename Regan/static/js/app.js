@@ -36,17 +36,21 @@ init();
 
 
 // // Drop Down Menu Event Handler
-// d3.selectAll("#selDataset").on("change", updatePage);
+d3.selectAll("#selDataset").on("change", updatePage);
 
-// function updatePage() {
-//   // Use D3 to select the dropdown menu
-//   var dropdownMenu = d3.selectAll("#selDataset").node();
-//   // Assign the dropdown menu item ID to a variable
-//   var dropdownMenuID = dropdownMenu.id;
- 
-//   // Assign the dropdown menu option to a variable
-//   var selectedOption = dropdownMenu.value;
+function updatePage() {
+  // Use D3 to select the dropdown menu
+  var dropdownMenu = d3.selectAll("#selDataset").node();
 
+  // Assign the dropdown menu option to a variable
+  var selectedOption = dropdownMenu.value;
+  console.log("option selected: " + selectedOption);
+
+  //TODO - call functions with selected data
+  //updateGraph(selectedOption);    
+
+
+}
 
 //   d3.json("./data/ironman.sqlite").then((data) => {      
 //     metaArray = data.metadata; 
