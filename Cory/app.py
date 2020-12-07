@@ -80,5 +80,34 @@ def race_stats_api():
 
     return jsonify(all_race_stats)
 
+# create route for bar chart data
+@app.route("/api/bar_chart")
+def bar_chart_api():
+    # Create our session (link) from Python to the DB
+    session = Session(engine)
+
+    # Perform query
+    sel = [
+        race_stats.Division, 
+        func.avg(race_stats.Swim), 
+        func.avg(race_stats.Bike), 
+        func.avg(race_stats.Run)
+    ]
+    bar_results = session.query(*sel).filter(race_stats.Swim is not 'Null').\
+        filter(race_stats.Bike is not 'Null').filter(race_stats.Run is not 'Null').\
+        group_by(race_stats.Division).order_by(race_stats.Division)
+
+    session.close()
+
+    bar_data = []
+    for division, swim, bike, run in bar_results:
+        bar_dict = {}
+        bar_dict['division'] = division
+        bar_dict['swim'] = swim
+        bar_dict['bike'] = bike
+        bar_dict['run'] = run
+        bar_data.append(bar_dict)
+    return jsonify(bar_data)
+
 if __name__ == '__main__':
     app.run(debug=True)
