@@ -15,13 +15,17 @@ function init(){
     d3.json("/api/race_stats").then((race_stats) => {      
     // divisionArray = race_stats.Division;
     var ddlItems = document.getElementById("selDataset")
+    // create empty array for each unique division
     var uniqueDivisionArray=[];
-    var opt;
+
     for (var i = 0; i < race_stats.length; i++) {
-        opt = race_stats[i].Division;
+        // create opt variable to loop through each division
+        var opt = race_stats[i].Division;
+        // find each unique division and push it to our uniqueDivisionArray
         if(!uniqueDivisionArray.includes(opt)){
             console.log("Unique division name found: " + opt);
             uniqueDivisionArray.push(opt);
+            // for each unique division, create an element in the dropdown
             var element = document.createElement("option");
             element.textContent = opt;
             element.value = opt;
@@ -52,7 +56,43 @@ function updatePage() {
 
 }
 
-//   d3.json("./data/ironman.sqlite").then((data) => {      
+// // set the dimensions and margins of the graph
+// var margin = {top: 10, right: 30, bottom: 20, left: 50},
+//     width = 460 - margin.left - margin.right,
+//     height = 400 - margin.top - margin.bottom;
+
+// // append the svg object to the body of the page
+// var svg = d3.select("#bar_chart")
+//   .append("svg")
+//     .attr("width", width + margin.left + margin.right)
+//     .attr("height", height + margin.top + margin.bottom)
+//   .append("g")
+//     .attr("transform",
+//           "translate(" + margin.left + "," + margin.top + ")");
+
+d3.json("/api/bar_chart").then((data) => {  
+    var keys = [];
+    for (key in data[0]){
+        if (key != 'division')
+            keys.push(key);
+    }
+    console.log(keys)
+    console.log(data)
+    
+    // make each subgroup have its own color
+    colors = d3.scaleOrdinal()
+        .domain(keys)
+        .range(['#377eb8','#e41a1c','#4daf4a'])
+});
+
+
+
+
+
+
+
+
+//   d3.json("../../data/ironman.sqlite").then((data) => {      
 //     metaArray = data.metadata; 
 //     var id = "ID: ";
 //     //division  is the ID in the index
@@ -78,7 +118,7 @@ function updatePage() {
 //     }
 //     updateCharts(selectedOption);
 // })    
-// }
+
 
 //Bar Chart Code
 // function updateCharts(id) {
