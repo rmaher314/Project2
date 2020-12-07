@@ -1,6 +1,51 @@
-d3.json("/api/race_stats", function(race_stats) { 
+d3.json("/api/race_stats").then((race_stats) => {      
     console.log(race_stats);
-});
+
+}) ;   
+
+// Setting the intial INT run the drop down function.  
+
+function init(){
+    d3.json("/api/race_stats").then((race_stats) => {      
+    // divisionArray = race_stats.Division;
+    var ddlItems = document.getElementById("selDataset")
+    var uniqueDivisionArray=[];
+    var opt;
+    for (var i = 0; i < race_stats.length; i++) {
+        opt = race_stats[i].Division;
+        if(!uniqueDivisionArray.includes(opt)){
+            console.log("Unique division name found: " + opt);
+            uniqueDivisionArray.push(opt);
+            var element = document.createElement("option");
+            element.textContent = opt;
+            element.value = opt;
+            ddlItems.appendChild(element);
+        }        
+    }
+    })    
+}  
+
+init();
+
+
+
+// // Drop Down Menu Event Handler
+d3.selectAll("#selDataset").on("change", updatePage);
+
+function updatePage() {
+  // Use D3 to select the dropdown menu
+  var dropdownMenu = d3.selectAll("#selDataset").node();
+
+  // Assign the dropdown menu option to a variable
+  var selectedOption = dropdownMenu.value;
+  console.log("option selected: " + selectedOption);
+
+  //TODO - call functions with selected data
+  //updateGraph(selectedOption);    
+
+
+}
+
 // Setting the intial INT run the drop down function.  
 
 // function init(){
