@@ -1,7 +1,7 @@
 import numpy as np
 import datetime as dt
 import sqlalchemy
-from sqlalchemy import create_engine, func, Time
+from sqlalchemy import create_engine, func
 import pandas as pd
 from flask import Flask, jsonify, render_template, url_for
 import json
@@ -43,7 +43,7 @@ def bar_chart_api():
     # connect to our database
     conn = engine.connect()
     # return query results
-    return pd.read_sql("select Division, avg(Swim.cast(Time)), avg(Bike.cast(Time)), avg(Run.cast(Time)) FROM race_stats GROUP BY Division ORDER BY Division", conn).to_json(orient='records')
+    return pd.read_sql("select Division, avg(Swim), avg(Bike), avg(Run) FROM race_stats GROUP BY Division ORDER BY Division", conn).to_json(orient='records')
 
 
 if __name__ == '__main__':
