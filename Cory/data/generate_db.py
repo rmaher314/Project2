@@ -1,14 +1,13 @@
 import sqlalchemy
 from sqlalchemy import create_engine
 import pandas as pd
-from config import username, password
 
 # Read in race stats csv and convert it to a dataframe
-csv_file = "data/2019_Ironman_World_Championship_Results.csv"
+csv_file = "2019_Ironman_World_Championship_Results.csv"
 race_stats_df = pd.read_csv(csv_file)
 
 # Read in countries csv and convert it to a dataframe
-csv_file = "data/countries_codes_and_coordinates.csv"
+csv_file = "countries_codes_and_coordinates.csv"
 countries_df = pd.read_csv(csv_file)
 
 # merge both dataframes into one dataframe on country code
@@ -19,13 +18,11 @@ ironman_df = merged_df.loc[:, ['BIB', 'Last_Name', 'First_Name', 'Country_x', 'C
 ironman_df = ironman_df.rename(columns={"Country_x":"Alpha_3_code", "Country_y":"Country"})
 
 # Convert strings to time values
-ironman_df.loc[:, 'Swim'] = pd.to_datetime(ironman_df.loc[:, 'Swim'], format='%H:%M:%S') - pd.to_datetime(ironman_df.loc[:, 'Swim'], format='%H:%M:%S').dt.normalize()
-ironman_df.loc[:, 'Bike'] = pd.to_datetime(ironman_df.loc[:, 'Bike'], format='%H:%M:%S') - pd.to_datetime(ironman_df.loc[:, 'Bike'], format='%H:%M:%S').dt.normalize()
-ironman_df.loc[:, 'Run'] = pd.to_datetime(ironman_df.loc[:, 'Run'], format='%H:%M:%S') - pd.to_datetime(ironman_df.loc[:, 'Run'], format='%H:%M:%S').dt.normalize()
-ironman_df.loc[:, 'Overall'] = pd.to_datetime(ironman_df.loc[:, 'Overall'], format='%H:%M:%S') - pd.to_datetime(ironman_df.loc[:, 'Overall'], format='%H:%M:%S').dt.normalize()
+ironman_df.loc[:, 'Swim'] = pd.to_datetime(ironman_df.loc[:, 'Swim'], format='%H:%M:%S')
+ironman_df.loc[:, 'Bike'] = pd.to_datetime(ironman_df.loc[:, 'Bike'], format='%H:%M:%S')
+ironman_df.loc[:, 'Run'] = pd.to_datetime(ironman_df.loc[:, 'Run'], format='%H:%M:%S')
+ironman_df.loc[:, 'Overall'] = pd.to_datetime(ironman_df.loc[:, 'Overall'], format='%H:%M:%S')
 
-
-# Create connection to postgresql
-rds_connection_string = f"{username}:{password}@localhost:5432/ironman"
 # save this to sqllite
 engine = create_engine("sqlite:///ironman.sqlite")
+ironman_df.to_sql(name='race_stats', con=engine, if_exists='replace', index=False)
