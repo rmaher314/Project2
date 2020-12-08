@@ -13,10 +13,19 @@ from flask import Flask, jsonify, render_template, url_for
 #################################################
 engine = create_engine("sqlite:///data/ironman.sqlite")
 
+# reflect an existing database into a new model
+Base = automap_base()
+# reflect the tables
+Base.prepare(engine, reflect=True)
+
+# Save reference to the table
+race_stats = Base.classes.race_stats
+
 #################################################
 # Flask Setup
 #################################################
 app = Flask(__name__)
+
 
 #################################################
 # Flask Routes

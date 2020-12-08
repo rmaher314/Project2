@@ -20,13 +20,18 @@ a {
 .jumbo{
   background-color: white;
 } 
-}
+
 
 nav {
   align-content: center;
 }
 
-
+.logo {
+  display: inline-block;
+  height: 75px;
+  width: 150px;
+  margin-right: 20px;
+}
 
 h6 {
   color: black;
@@ -78,4 +83,3 @@ footer {
   display: none; 
 }
 }
-</style>
