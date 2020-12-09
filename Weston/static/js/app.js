@@ -82,6 +82,15 @@ var Alpha_3_code =[];
     for (var i = 0; i <race_stats.length; i++){counts[race_stats[i].Alpha_3_code]; };
     console.log(Alpha_3_code);
 
+OR
+
+var locations = [];
+
+for (var i = 0; i <race_stats.length; i++) {
+    locations.push(
+        L.marker(race_stats[i].Latitude_average + Longitude_average)
+    )
+};    
 //   d3.json("./data/ironman.sqlite").then((data) => {      
 //     metaArray = data.metadata; 
 //     var id = "ID: ";
