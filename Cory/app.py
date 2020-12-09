@@ -36,6 +36,8 @@ def race_stats_api():
         Overall, Division_Rank, Gender_Rank, Overall_Rank, Latitude_average, Longitude_average\
             FROM race_stats", conn).to_json(orient='records')
 
+# display with time on y or normalize to who comleted 
+# divide everything by the fastest time ever
 
 # create route for bar chart data
 @app.route("/api/bar_chart")

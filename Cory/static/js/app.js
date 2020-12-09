@@ -70,14 +70,17 @@ var svg = d3.select("#bar")
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
 
-d3.json("/api/bar_chart").then((data) => {  
+d3.json("/api/bar_chart").then((bar_data) => {  
     var keys = [];
-    for (key in data[0]){
+    for (key in bar_data[0]){
         if (key != 'division')
             keys.push(key);
     }
     console.log(keys)
-    console.log(data)
+    // bar_data.forEach(function(data) {
+    //     data.swim
+    // })
+    console.log(bar_data)
     
     // make each subgroup have its own color
     colors = d3.scaleOrdinal()
@@ -85,7 +88,7 @@ d3.json("/api/bar_chart").then((data) => {
         .range(['#377eb8','#e41a1c','#4daf4a'])
 });
 
-
+//get it as seconds then map over data and convert seconds into format we WebAuthentication .scalelinear
 
 
 
