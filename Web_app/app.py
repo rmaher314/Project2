@@ -45,7 +45,7 @@ def bar_chart_api():
     # connect to our database
     conn = engine.connect()
     # return query results
-    return pd.read_sql("select Division, avg(Swim), avg(Bike), avg(Run) FROM race_stats GROUP BY Division ORDER BY Division", conn).to_json(orient='records')
+    return pd.read_sql("select Division, avg(Swim) as Swim, avg(Bike) as Bike, avg(Run) as Run FROM race_stats GROUP BY Division ORDER BY Division", conn).to_json(orient='records')
 
 
 if __name__ == '__main__':
