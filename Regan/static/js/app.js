@@ -1,9 +1,3 @@
-//This was the original code the next line of code seems to work and out put with no errors.
-// d3.json("/api/race_stats", function(race_stats) { 
-//     console.log(race_stats);
-// });
-
-
 d3.json("/api/race_stats").then((race_stats) => {      
     console.log(race_stats);
 
@@ -51,6 +45,40 @@ function updatePage() {
 
 
 }
+
+// Setting the intial INT run the drop down function.  
+
+// function init(){
+//     d3.json("./data/ironman.sqlite").then((data) => {      
+//     nameArray = data.names;
+//     var ddlItems = document.getElementById("selDataset")
+
+//         for (var i = 0; i < nameArray.length; i++) {
+//             var opt = nameArray[i];
+//             var element = document.createElement("option");
+//             element.textContent = opt;
+//             element.value = opt;
+//             ddlItems.appendChild(element);
+//           }
+//     })    
+// }  
+
+// init();
+
+
+
+// // Drop Down Menu Event Handler
+// d3.selectAll("#selDataset").on("change", updatePage);
+
+// function updatePage() {
+//   // Use D3 to select the dropdown menu
+//   var dropdownMenu = d3.selectAll("#selDataset").node();
+//   // Assign the dropdown menu item ID to a variable
+//   var dropdownMenuID = dropdownMenu.id;
+ 
+//   // Assign the dropdown menu option to a variable
+//   var selectedOption = dropdownMenu.value;
+
 
 //   d3.json("./data/ironman.sqlite").then((data) => {      
 //     metaArray = data.metadata; 
