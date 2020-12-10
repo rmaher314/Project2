@@ -33,6 +33,63 @@ function init(){
         }        
     }
     })    
+
+    // Create initial bar graph
+    d3.json("/api/bar_chart").then((bar_data) => {
+
+        var swim = []
+        bar_data.forEach(function(data) {
+            swim.push(data.Swim / 3600)
+        })
+
+        var bike = []
+        bar_data.forEach(function(data) {
+            bike.push(data.Bike / 3600)
+        })
+    
+        var run = []
+        bar_data.forEach(function(data) {
+            run.push(data.Run / 3600)
+        })
+
+        // var bike = []
+        // bar_data.forEach(function(data) {
+        //     bike.push(data.Bike)
+        // })
+    
+        // var run = []
+        // bar_data.forEach(function(data) {
+        //     run.push(data.Run)
+        // })
+
+        var trace1 = {
+            x: ['F18-24','F25-29','F30-34','F35-39','F40-44','F45-49','F50-54','F55-59','F60-64','F65-69','F70-74','FPRO','M18-24','M25-29','M30-34','M35-39','M40-44','M45-49','M50-54','M55-59','M60-64','M65-69','M70-74','M75-79','M80-84','MPRO'],
+            y: swim,
+            name: 'Swim',
+            type: 'bar'
+        }
+        var trace2 = {
+            x: ['F18-24','F25-29','F30-34','F35-39','F40-44','F45-49','F50-54','F55-59','F60-64','F65-69','F70-74','FPRO','M18-24','M25-29','M30-34','M35-39','M40-44','M45-49','M50-54','M55-59','M60-64','M65-69','M70-74','M75-79','M80-84','MPRO'],
+            y: bike,
+            name: 'Bike',
+            type: 'bar',
+            // marker: {
+            //     opacity: 
+            // }
+        }
+        var trace3 = {
+            x: ['F18-24','F25-29','F30-34','F35-39','F40-44','F45-49','F50-54','F55-59','F60-64','F65-69','F70-74','FPRO','M18-24','M25-29','M30-34','M35-39','M40-44','M45-49','M50-54','M55-59','M60-64','M65-69','M70-74','M75-79','M80-84','MPRO'],
+            y: run,
+            name: 'Run',
+            type: 'bar'
+        }
+
+        var traceData = [trace1, trace2, trace3]
+
+        var layout = {barmode: 'stack'};
+    
+        Plotly.newPlot('bar', traceData, layout)
+    });
 }  
 
 init();
@@ -79,21 +136,21 @@ function updatePage() {
 
     // create swim bars
     var trace_swim = {
-        x: ['F18-24','F25-29','F30-34','F35-39','F40-44','F45-49','F50-54','F55-59', 'F60-64', 'F65-69','F70-74','FPRO'],
+        x: ['F18-24','F25-29','F30-34','F35-39','F40-44','F45-49','F50-54','F55-59','F60-64','F65-69','F70-74','FPRO','M18-24','M25-29','M30-34','M35-39','M40-44','M45-49','M50-54','M55-59','M60-64','M65-69','M70-74','M75-79','M80-84','MPRO'],
         y: swim,
         name: 'Swim',
         type: 'bar'
     }
 
     var trace_bike = {
-        x: ['F18-24','F25-29','F30-34','F35-39','F40-44','F45-49','F50-54','F55-59', 'F60-64', 'F65-69','F70-74','FPRO'],
+        x: ['F18-24','F25-29','F30-34','F35-39','F40-44','F45-49','F50-54','F55-59','F60-64','F65-69','F70-74','FPRO','M18-24','M25-29','M30-34','M35-39','M40-44','M45-49','M50-54','M55-59','M60-64','M65-69','M70-74','M75-79','M80-84','MPRO'],
         y: bike,
         name: 'Bike',
         type: 'bar'
     }
 
     var trace_run = {
-        x: ['F18-24','F25-29','F30-34','F35-39','F40-44','F45-49','F50-54','F55-59', 'F60-64', 'F65-69','F70-74','FPRO'],
+        x: ['F18-24','F25-29','F30-34','F35-39','F40-44','F45-49','F50-54','F55-59','F60-64','F65-69','F70-74','FPRO','M18-24','M25-29','M30-34','M35-39','M40-44','M45-49','M50-54','M55-59','M60-64','M65-69','M70-74','M75-79','M80-84','MPRO'],
         y: run,
         name: 'Run',
         type: 'bar'
