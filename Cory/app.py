@@ -34,7 +34,7 @@ def race_stats_api():
     # return query results
     return pd.read_sql("select BIB, Last_Name, First_Name, Country, Gender, Division, Swim, Bike, Run,\
         Overall, Division_Rank, Gender_Rank, Overall_Rank, Latitude_average, Longitude_average\
-            FROM race_stats", conn).to_json(orient='records')
+            FROM race_stats Order by Division", conn).to_json(orient='records')
 
 # display with time on y or normalize to who comleted 
 # divide everything by the fastest time ever
