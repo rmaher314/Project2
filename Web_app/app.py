@@ -34,7 +34,7 @@ def race_stats_api():
     # return query results
     return pd.read_sql("select BIB, Last_Name, First_Name, Country, Gender, Division, Swim, Bike, Run,\
         Overall, Division_Rank, Gender_Rank, Overall_Rank, Latitude_average, Longitude_average\
-            FROM race_stats", conn).to_json(orient='records')
+            FROM race_stats Order by Division", conn).to_json(orient='records')
 
 # display with time on y or normalize to who comleted 
 # divide everything by the fastest time ever
@@ -48,12 +48,12 @@ def bar_chart_api():
     return pd.read_sql("select Division, avg(Swim) as Swim, avg(Bike) as Bike, avg(Run) as Run FROM race_stats GROUP BY Division ORDER BY Division", conn).to_json(orient='records')
 
 # create route for top ten table
-@app.route("/api/top_ten_table")
-def table_api():
+@app.route("/api/top_ten_table/<selectedItem>")
+def table_api(selectedItem):
     # connect to our database
     conn = engine.connect()
     # return query results
-    return pd.read_sql("SELECT Division_Rank, Division, First_Name, Last_Name, Country, Gender, Overall, Overall_Rank FROM race_stats ", conn).to_json(orient='records')
-
+    return pd.read_sql("SELECT Division_Rank, Division, First_Name, Last_Name, Country, Gender, Overall, Overall_Rank FROM race_stats WHERE Division = '%s' AND Division_Rank < 11 ORDER BY Division_Rank" %selectedItem, conn).to_json(orient='records')
+    
 if __name__ == '__main__':
     app.run(debug=True)

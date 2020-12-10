@@ -1,28 +1,94 @@
-d3.json("/api/race_stats").then((race_stats) => {      
-    console.log(race_stats);
+var tbody = d3.select("tbody");
 
-}) ;   
+// d3.json("/api/race_stats").then((race_stats) => {      
+//     console.log(race_stats);
+// }) ;   
 
 // Setting the intial INT run the drop down function.  
-
 function init(){
+    // create dropdown
     d3.json("/api/race_stats").then((race_stats) => {      
-    // divisionArray = race_stats.Division;
-    var ddlItems = document.getElementById("selDataset")
-    var uniqueDivisionArray=[];
-    var opt;
-    for (var i = 0; i < race_stats.length; i++) {
-        opt = race_stats[i].Division;
-        if(!uniqueDivisionArray.includes(opt)){
-            console.log("Unique division name found: " + opt);
-            uniqueDivisionArray.push(opt);
-            var element = document.createElement("option");
-            element.textContent = opt;
-            element.value = opt;
-            ddlItems.appendChild(element);
+        // divisionArray = race_stats.Division;
+        var ddlItems = document.getElementById("selDataset")
+        var uniqueDivisionArray=[];
+        var opt;
+
+        //looping through raw data and only putting unique Divisions in the array
+        for (var i = 0; i < race_stats.length; i++) {
+            opt = race_stats[i].Division;
+            if(!uniqueDivisionArray.includes(opt)){  //if opt is not in the array, push opt
+                uniqueDivisionArray.push(opt);
+            }
         }        
-    }
-    })    
+        uniqueDivisionArray.sort();
+
+        //looping through sorted array and adding each element to the dropdown menu
+        for (var j = 0; j < uniqueDivisionArray.length; j++){
+            opt = uniqueDivisionArray[j];
+            var element = document.createElement("option");
+                element.textContent = opt;
+                element.value = opt;
+                ddlItems.appendChild(element);
+        }   
+    });
+
+    // Create initial top ten table
+    var list = d3.select(".divisiontable");
+        list.html("");
+    d3.json("/api/top_ten_table/F18-24").then((ranks) => {      
+        console.log(ranks);
+      
+        ranks.forEach((racer) => {
+            var row = tbody.append("tr");
+            Object.entries(racer).forEach(([key, value]) => {
+                var cell = row.append("td");
+                cell.text(value);
+            });
+        });  
+    }) ;
+
+    // Create initial bar graph
+    d3.json("/api/bar_chart").then((bar_data) => {
+        // push all swim values to an array and convert seconds to hours
+        var swim = []
+        bar_data.forEach(function(data) {
+            swim.push(data.Swim / 3600)
+        })
+        // push all bike values to an array and convert seconds to hours
+        var bike = []
+        bar_data.forEach(function(data) {
+            bike.push(data.Bike / 3600)
+        })
+        // push all run values to an array and convert seconds to hours
+        var run = []
+        bar_data.forEach(function(data) {
+            run.push(data.Run / 3600)
+        })
+        var trace1 = {
+            x: ['F18-24','F25-29','F30-34','F35-39','F40-44','F45-49','F50-54','F55-59','F60-64','F65-69','F70-74','FPRO','M18-24','M25-29','M30-34','M35-39','M40-44','M45-49','M50-54','M55-59','M60-64','M65-69','M70-74','M75-79','M80-84','MPRO'],
+            y: swim,
+            name: 'Swim',
+            type: 'bar'
+        }
+        var trace2 = {
+            x: ['F18-24','F25-29','F30-34','F35-39','F40-44','F45-49','F50-54','F55-59','F60-64','F65-69','F70-74','FPRO','M18-24','M25-29','M30-34','M35-39','M40-44','M45-49','M50-54','M55-59','M60-64','M65-69','M70-74','M75-79','M80-84','MPRO'],
+            y: bike,
+            name: 'Bike',
+            type: 'bar',
+        }
+        var trace3 = {
+            x: ['F18-24','F25-29','F30-34','F35-39','F40-44','F45-49','F50-54','F55-59','F60-64','F65-69','F70-74','FPRO','M18-24','M25-29','M30-34','M35-39','M40-44','M45-49','M50-54','M55-59','M60-64','M65-69','M70-74','M75-79','M80-84','MPRO'],
+            y: run,
+            name: 'Run',
+            type: 'bar'
+        }
+
+        var traceData = [trace1, trace2, trace3]
+
+        var layout = {barmode: 'stack'};
+    
+        Plotly.newPlot('bar', traceData, layout)
+    });
 }  
 
 init();
@@ -40,131 +106,58 @@ function updatePage() {
   var selectedOption = dropdownMenu.value;
   console.log("option selected: " + selectedOption);
 
+  // call updateTopTenTable 
+  updateTopTenTable(selectedOption); 
   //TODO - call functions with selected data
-  //updateGraph(selectedOption);    
-
+  updateBarGraph();  
+  
 
 }
 
-// Setting the intial INT run the drop down function.  
+function updateBarGraph() {
+    // Create initial bar graph
+  d3.json("/api/bar_chart").then((bar_data) => {
+    // push all swim values to an array and convert seconds to hours
+    var swim = []
+    bar_data.forEach(function(data) {
+        swim.push(data.Swim / 3600)
+    })
+    // push all bike values to an array and convert seconds to hours
+    var bike = []
+    bar_data.forEach(function(data) {
+        bike.push(data.Bike / 3600)
+    })
+    // push all run values to an array and convert seconds to hours
+    var run = []
+    bar_data.forEach(function(data) {
+        run.push(data.Run / 3600)
+    })
+    var trace_swim = {
+        x: ['F18-24','F25-29','F30-34','F35-39','F40-44','F45-49','F50-54','F55-59','F60-64','F65-69','F70-74','FPRO','M18-24','M25-29','M30-34','M35-39','M40-44','M45-49','M50-54','M55-59','M60-64','M65-69','M70-74','M75-79','M80-84','MPRO'],
+        y: swim,
+        name: 'Swim',
+        type: 'bar'
+    }
+    var trace_bike = {
+        x: ['F18-24','F25-29','F30-34','F35-39','F40-44','F45-49','F50-54','F55-59','F60-64','F65-69','F70-74','FPRO','M18-24','M25-29','M30-34','M35-39','M40-44','M45-49','M50-54','M55-59','M60-64','M65-69','M70-74','M75-79','M80-84','MPRO'],
+        y: bike,
+        name: 'Bike',
+        type: 'bar',
+    }
+    var trace_run = {
+        x: ['F18-24','F25-29','F30-34','F35-39','F40-44','F45-49','F50-54','F55-59','F60-64','F65-69','F70-74','FPRO','M18-24','M25-29','M30-34','M35-39','M40-44','M45-49','M50-54','M55-59','M60-64','M65-69','M70-74','M75-79','M80-84','MPRO'],
+        y: run,
+        name: 'Run',
+        type: 'bar'
+    }
 
-// function init(){
-//     d3.json("./data/ironman.sqlite").then((data) => {      
-//     nameArray = data.names;
-//     var ddlItems = document.getElementById("selDataset")
+    var traceData = [trace_swim, trace_bike, trace_run]
 
-//         for (var i = 0; i < nameArray.length; i++) {
-//             var opt = nameArray[i];
-//             var element = document.createElement("option");
-//             element.textContent = opt;
-//             element.value = opt;
-//             ddlItems.appendChild(element);
-//           }
-//     })    
-// }  
+    var layout = {barmode: 'stack'};
 
-// init();
-
-
-
-// // Drop Down Menu Event Handler
-// d3.selectAll("#selDataset").on("change", updatePage);
-
-// function updatePage() {
-//   // Use D3 to select the dropdown menu
-//   var dropdownMenu = d3.selectAll("#selDataset").node();
-//   // Assign the dropdown menu item ID to a variable
-//   var dropdownMenuID = dropdownMenu.id;
- 
-//   // Assign the dropdown menu option to a variable
-//   var selectedOption = dropdownMenu.value;
-
-
-//   d3.json("./data/ironman.sqlite").then((data) => {      
-//     metaArray = data.metadata; 
-//     var id = "ID: ";
-//     //division  is the ID in the index
-//     var demotable = d3.select("#division");
-//     demotable.html("");
-//     for (var i = 0; i < metaArray.length; i++) {
-//         if (metaArray[i].id == selectedOption){
-//             demotable.append("h5"). text(id + selectedOption);
-//             var ethnicity = "ETHNICITY: " + metaArray[i].ethnicity;
-//             demotable.append("h5"). text(ethnicity);
-//             var gender = "GENDER: " + metaArray[i].gender;
-//             demotable.append("h5"). text(gender);
-//             var age = "AGE: " + metaArray[i].age;
-//             demotable.append("h5"). text(age);
-//             var location = "LOCATION: " + metaArray[i].location
-//             demotable.append("h5"). text(location);
-//             var bbtype = "BBTYPE: " + metaArray[i].bbtype
-//             demotable.append("h5"). text(bbtype);
-//             var wfreq = "WFREQ: " + metaArray[i].wfreq
-//             demotable.append("h5"). text(wfreq);
-
-//         }
-//     }
-//     updateCharts(selectedOption);
-// })    
-// }
-
-//Bar Chart Code
-// function updateCharts(id) {
-//     console.log("update Charts called for id: " + id)
-//     // Use D3 to select the dropdown menu
-      
-//     d3.json("/api/race_stats".then((race_stats) => { 
-//         raceArray = race_stats.Gender; 
-                            
-//                 var trace1 ={
-//                     x: Gender,
-//                     y: Division,
-//                     type: "bar",
-                    
-//                 };
-
-//                 var plotdata = [trace1];
-//                 var layout = {
-//                     title: "Hi"
-//                 };
-                        
-//                 Plotly.newPlot("bar", plotdata, layout);
-
-                // var desired_maximum_marker_size = 40;
-
-                // var trace2 = {
-                //     x: otuId,
-                //     y: samplesData,
-                //     mode: 'markers',
-                //     marker: {
-                //          size: samplesData,
-                //          color: otuId,
-                //          colorscale: "Viridis",
-                //          sizeref: 2.0 * Math.max(samplesData) / (desired_maximum_marker_size**2)
-                //      }
-                // };
-                
-//                 var bubbledata = [trace2];
-                
-//                 var layout2 = {
-//                     title: 'Bacteria Cultures Per Sample',
-//                     xaxis: {
-//                         title: {
-//                           text: 'OTU ID'
-//                         }
-//                     },
-//                     showlegend: false
-                   
-//                 };
-                
-//                 Plotly.newPlot('bubble', bubbledata, layout2);
+    Plotly.newPlot('bar', traceData, layout)
+  });
+}
 
 
-//             }
-
-
-//             }
-        
-//     })
-// }
    
