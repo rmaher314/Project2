@@ -46,7 +46,9 @@ img {
 .navbar-default {
   background: #7a0a0a;
 }
-
+.navbar-header {
+  background: #7a0a0a;
+}
 .dataframe {
   align-content: center;
 
