@@ -52,6 +52,45 @@ function updatePage() {
 
 }
 
+
+var myMap = L.map("world", {
+    center: [40.4637, 3.7492],
+    zoom: 2.25
+  });
+
+L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+    attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
+    tileSize: 512,
+    maxZoom: 18,
+    zoomOffset: -1,
+    id: "mapbox/streets-v11",
+    accessToken: API_KEY
+}).addTo(myMap);
+
+d3.json("/api/race_stats").then((race_stats) => {      
+    console.log(race_stats);
+
+}) ;   
+
+var locations = race_stats(L.marker(["Latitude_average", "Longitude_average"], {
+    draggable: false,
+})).addTo(myMap);
+
+d3.json("/api/race_stats").then((race_stats));
+
+var Alpha_3_code =[]; 
+    for (var i = 0; i <race_stats.length; i++){counts[race_stats[i].Alpha_3_code]; };
+    console.log(Alpha_3_code);
+
+OR
+
+var locations = [];
+
+for (var i = 0; i <race_stats.length; i++) {
+    locations.push(
+        L.marker(race_stats[i].Latitude_average + Longitude_average)
+    )
+};    
 //   d3.json("./data/ironman.sqlite").then((data) => {      
 //     metaArray = data.metadata; 
 //     var id = "ID: ";
