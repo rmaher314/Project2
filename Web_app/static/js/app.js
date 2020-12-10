@@ -34,7 +34,7 @@ function init(){
 
     // Create initial top ten table
     var list = d3.select(".divisiontable");
-        list.html("");
+    list.html("");
     d3.json("/api/top_ten_table/F18-24").then((ranks) => {      
         console.log(ranks);
       
@@ -159,5 +159,20 @@ function updateBarGraph() {
   });
 }
 
-
+function updateTopTenTable(opt){
+    var list = d3.select(".divisiontable");
+    list.html("");
+    console.log("option selected: " + opt);
+    d3.json("/api/top_ten_table/" + opt).then((ranks) => {      
+      console.log(ranks);
+  
+      ranks.forEach((racer) => {
+          var row = tbody.append("tr");
+          Object.entries(racer).forEach(([key, value]) => {
+            var cell = row.append("td");
+            cell.text(value);
+          });
+        });  
+      }) ;
+}
    
