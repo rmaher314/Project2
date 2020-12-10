@@ -34,9 +34,24 @@ function init(){
             element.textContent = opt;
             element.value = opt;
             ddlItems.appendChild(element);
+            
     }
     
-    })    
+    }) 
+        var list = d3.select(".divisiontable");
+        list.html("");
+        d3.json("/api/top_ten_table/F18-24").then((ranks) => {      
+          console.log(ranks);
+      
+          ranks.forEach((racer) => {
+              var row = tbody.append("tr");
+              Object.entries(racer).forEach(([key, value]) => {
+                var cell = row.append("td");
+                cell.text(value);
+              });
+            });  
+          }) ;
+    
 }  
 
 init();
@@ -47,32 +62,32 @@ init();
 d3.selectAll("#selDataset").on("change", updatePage);
 
 function updatePage() {
-  // Use D3 to select the dropdown menu
+  // Use D3 to select the dropdown menu 
   var dropdownMenu = d3.selectAll("#selDataset").node();
 
   // Assign the dropdown menu option to a variable
   var selectedOption = dropdownMenu.value;
-  var list = d3.select(".divisiontable");
-  list.html("");
-  console.log("option selected: " + selectedOption);
-  d3.json("/api/top_ten_table/" + selectedOption).then((ranks) => {      
-    console.log(ranks);
 
-    ranks.forEach((racer) => {
-        var row = tbody.append("tr");
-        Object.entries(racer).forEach(([key, value]) => {
-          var cell = row.append("td");
-          cell.text(value);
-        });
-      });
-
-}) ;
-  //TODO - call functions with selected data
-  //updateGraph(selectedOption);    
-
-
+  updateTopTenTable(selectedOption);  
 }
 
+
+function updateTopTenTable(opt){
+    var list = d3.select(".divisiontable");
+    list.html("");
+    console.log("option selected: " + opt);
+    d3.json("/api/top_ten_table/" + opt).then((ranks) => {      
+      console.log(ranks);
+  
+      ranks.forEach((racer) => {
+          var row = tbody.append("tr");
+          Object.entries(racer).forEach(([key, value]) => {
+            var cell = row.append("td");
+            cell.text(value);
+          });
+        });  
+      }) ;
+}
 
 // The following code is for the table output.
 
