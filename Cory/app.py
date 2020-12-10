@@ -40,20 +40,20 @@ def race_stats_api():
 # divide everything by the fastest time ever
 
 # create route for bar chart data
-@app.route("/api/bar_chart")
+@app.route("/api/bar_chart/")
 def bar_chart_api():
     # connect to our database
     conn = engine.connect()
     # return query results
     return pd.read_sql("select Division, avg(Swim) as Swim, avg(Bike) as Bike, avg(Run) as Run FROM race_stats GROUP BY Division ORDER BY Division", conn).to_json(orient='records')
 
-@app.route("/api/top_ten_table")
-def table_api():
+@app.route("/api/top_ten_table/<selectedItem>")
+def table_api(selectedItem):
     # connect to our database
     conn = engine.connect()
     # return query results
-    return pd.read_sql("SELECT Division_Rank, Division, First_Name, Last_Name, Country, Gender, Overall, Overall_Rank FROM race_stats ", conn).to_json(orient='records')
-
+    return pd.read_sql("SELECT Division_Rank, Division, First_Name, Last_Name, Country, Gender, Overall, Overall_Rank FROM race_stats WHERE Division = '%s' AND Division_Rank < 11 ORDER BY Division_Rank" %selectedItem, conn).to_json(orient='records')
+   
 
 if __name__ == '__main__':
     app.run(debug=True)

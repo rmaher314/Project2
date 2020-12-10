@@ -10,12 +10,12 @@ function init(){
     d3.json("/api/race_stats").then((race_stats) => {      
         // divisionArray = race_stats.Division;
         var ddlItems = document.getElementById("selDataset")
+        // create empty array for each unique division
         var uniqueDivisionArray=[];
-        var opt;
 
         //looping through raw data and only putting unique Divisions in the array
         for (var i = 0; i < race_stats.length; i++) {
-            opt = race_stats[i].Division;
+            var opt = race_stats[i].Division;
             if(!uniqueDivisionArray.includes(opt)){  //if opt is not in the array, push opt
                 uniqueDivisionArray.push(opt);
             }
