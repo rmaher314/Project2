@@ -26,6 +26,10 @@ app = Flask(__name__)
 def home():
     return render_template('index.html')
 
+@app.route("/about")
+def about():
+    return render_template('about.html')
+
 # this is how we send data to javascript
 @app.route("/api/race_stats")
 def race_stats_api():
