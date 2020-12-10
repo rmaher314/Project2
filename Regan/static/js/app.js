@@ -1,5 +1,11 @@
+var tbody = d3.select("tbody");
+
+
+
+
 d3.json("/api/race_stats").then((race_stats) => {      
     console.log(race_stats);
+    
 
 }) ;   
 
@@ -11,17 +17,25 @@ function init(){
     var ddlItems = document.getElementById("selDataset")
     var uniqueDivisionArray=[];
     var opt;
+
+    //looping through raw data and only putting unique Divisions in the array
     for (var i = 0; i < race_stats.length; i++) {
         opt = race_stats[i].Division;
-        if(!uniqueDivisionArray.includes(opt)){
-            console.log("Unique division name found: " + opt);
+        if(!uniqueDivisionArray.includes(opt)){  //if opt is not in the array, push opt
             uniqueDivisionArray.push(opt);
-            var element = document.createElement("option");
+        }
+    }        
+    uniqueDivisionArray.sort();
+
+    //looping through sorted array and adding each element to the dropdown menu
+    for (var j = 0; j < uniqueDivisionArray.length; j++){
+        opt = uniqueDivisionArray[j];
+        var element = document.createElement("option");
             element.textContent = opt;
             element.value = opt;
             ddlItems.appendChild(element);
-        }        
     }
+    
     })    
 }  
 
@@ -38,133 +52,28 @@ function updatePage() {
 
   // Assign the dropdown menu option to a variable
   var selectedOption = dropdownMenu.value;
+  var list = d3.select(".divisiontable");
+  list.html("");
   console.log("option selected: " + selectedOption);
+  d3.json("/api/top_ten_table/" + selectedOption).then((ranks) => {      
+    console.log(ranks);
 
+    ranks.forEach((racer) => {
+        var row = tbody.append("tr");
+        Object.entries(racer).forEach(([key, value]) => {
+          var cell = row.append("td");
+          cell.text(value);
+        });
+      });
+
+}) ;
   //TODO - call functions with selected data
   //updateGraph(selectedOption);    
 
 
 }
 
-// Setting the intial INT run the drop down function.  
 
-// function init(){
-//     d3.json("./data/ironman.sqlite").then((data) => {      
-//     nameArray = data.names;
-//     var ddlItems = document.getElementById("selDataset")
-
-//         for (var i = 0; i < nameArray.length; i++) {
-//             var opt = nameArray[i];
-//             var element = document.createElement("option");
-//             element.textContent = opt;
-//             element.value = opt;
-//             ddlItems.appendChild(element);
-//           }
-//     })    
-// }  
-
-// init();
+// The following code is for the table output.
 
 
-
-// // Drop Down Menu Event Handler
-// d3.selectAll("#selDataset").on("change", updatePage);
-
-// function updatePage() {
-//   // Use D3 to select the dropdown menu
-//   var dropdownMenu = d3.selectAll("#selDataset").node();
-//   // Assign the dropdown menu item ID to a variable
-//   var dropdownMenuID = dropdownMenu.id;
- 
-//   // Assign the dropdown menu option to a variable
-//   var selectedOption = dropdownMenu.value;
-
-
-//   d3.json("./data/ironman.sqlite").then((data) => {      
-//     metaArray = data.metadata; 
-//     var id = "ID: ";
-//     //division  is the ID in the index
-//     var demotable = d3.select("#division");
-//     demotable.html("");
-//     for (var i = 0; i < metaArray.length; i++) {
-//         if (metaArray[i].id == selectedOption){
-//             demotable.append("h5"). text(id + selectedOption);
-//             var ethnicity = "ETHNICITY: " + metaArray[i].ethnicity;
-//             demotable.append("h5"). text(ethnicity);
-//             var gender = "GENDER: " + metaArray[i].gender;
-//             demotable.append("h5"). text(gender);
-//             var age = "AGE: " + metaArray[i].age;
-//             demotable.append("h5"). text(age);
-//             var location = "LOCATION: " + metaArray[i].location
-//             demotable.append("h5"). text(location);
-//             var bbtype = "BBTYPE: " + metaArray[i].bbtype
-//             demotable.append("h5"). text(bbtype);
-//             var wfreq = "WFREQ: " + metaArray[i].wfreq
-//             demotable.append("h5"). text(wfreq);
-
-//         }
-//     }
-//     updateCharts(selectedOption);
-// })    
-// }
-
-//Bar Chart Code
-// function updateCharts(id) {
-//     console.log("update Charts called for id: " + id)
-//     // Use D3 to select the dropdown menu
-      
-//     d3.json("/api/race_stats".then((race_stats) => { 
-//         raceArray = race_stats.Gender; 
-                            
-//                 var trace1 ={
-//                     x: Gender,
-//                     y: Division,
-//                     type: "bar",
-                    
-//                 };
-
-//                 var plotdata = [trace1];
-//                 var layout = {
-//                     title: "Hi"
-//                 };
-                        
-//                 Plotly.newPlot("bar", plotdata, layout);
-
-                // var desired_maximum_marker_size = 40;
-
-                // var trace2 = {
-                //     x: otuId,
-                //     y: samplesData,
-                //     mode: 'markers',
-                //     marker: {
-                //          size: samplesData,
-                //          color: otuId,
-                //          colorscale: "Viridis",
-                //          sizeref: 2.0 * Math.max(samplesData) / (desired_maximum_marker_size**2)
-                //      }
-                // };
-                
-//                 var bubbledata = [trace2];
-                
-//                 var layout2 = {
-//                     title: 'Bacteria Cultures Per Sample',
-//                     xaxis: {
-//                         title: {
-//                           text: 'OTU ID'
-//                         }
-//                     },
-//                     showlegend: false
-                   
-//                 };
-                
-//                 Plotly.newPlot('bubble', bubbledata, layout2);
-
-
-//             }
-
-
-//             }
-        
-//     })
-// }
-   
