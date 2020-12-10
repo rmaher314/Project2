@@ -26,7 +26,9 @@ nav {
   align-content: center;
 }
 
-
+.align {
+  text-align: left;
+}
 
 h6 {
   color: black;
@@ -79,5 +81,6 @@ footer {
 .carousel-caption {
   display: none; 
 }
+
 }
 </style>
