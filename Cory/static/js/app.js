@@ -44,49 +44,151 @@ d3.selectAll("#selDataset").on("change", updatePage);
 
 function updatePage() {
   // Use D3 to select the dropdown menu
-  var dropdownMenu = d3.selectAll("#selDataset").node();
+  var dropdownMenu = d3.selectAll("#selDataset");
 
   // Assign the dropdown menu option to a variable
-  var selectedOption = dropdownMenu.value;
+  var selectedOption = dropdownMenu.property("value");
   console.log("option selected: " + selectedOption);
 
   //TODO - call functions with selected data
   //updateGraph(selectedOption);    
 
+  // loop through each division and map the swim, bike and run times into an array for each trace
+  d3.json("/api/bar_chart").then((bar_data) => {
 
+
+    // possibly add if statement so if they select female category we only show all of the women divisions
+    // I need 3 traces one for swim, bike and run
+    // y will be all of the race leg times for all divisions 
+    var swim = []
+    bar_data.forEach(function(data) {
+        swim.push(data.Swim)
+    })
+
+    var bike = []
+    bar_data.forEach(function(data) {
+        bike.push(data.Bike)
+    })
+
+    var run = []
+    bar_data.forEach(function(data) {
+        run.push(data.Run)
+    })
+
+    console.log(swim)
+
+    // create swim bars
+    var trace_swim = {
+        x: ['F18-24','F25-29','F30-34','F35-39','F40-44','F45-49','F50-54','F55-59', 'F60-64', 'F65-69','F70-74','FPRO'],
+        y: swim,
+        name: 'Swim',
+        type: 'bar'
+    }
+
+    var trace_bike = {
+        x: ['F18-24','F25-29','F30-34','F35-39','F40-44','F45-49','F50-54','F55-59', 'F60-64', 'F65-69','F70-74','FPRO'],
+        y: bike,
+        name: 'Bike',
+        type: 'bar'
+    }
+
+    var trace_run = {
+        x: ['F18-24','F25-29','F30-34','F35-39','F40-44','F45-49','F50-54','F55-59', 'F60-64', 'F65-69','F70-74','FPRO'],
+        y: run,
+        name: 'Run',
+        type: 'bar'
+    }
+
+    var traceData = [trace_swim, trace_bike, trace_run]
+
+    var layout = {barmode: 'stack'};
+
+    Plotly.newPlot('bar', traceData, layout)
+  });
 }
 
-// set the dimensions and margins of the graph
-var margin = {top: 10, right: 30, bottom: 20, left: 50},
-    width = 460 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
+// 'M18-24','M25-29','M30-34','M35-39','M40-44','M45-49','M50-54','M55-59','M60-64','M65-69','M70-74','M75-79','M80-84','MPRO'
 
-// append the svg object to the body of the page
-var svg = d3.select("#bar")
-  .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform",
-          "translate(" + margin.left + "," + margin.top + ")");
 
-d3.json("/api/bar_chart").then((bar_data) => {  
-    var keys = [];
-    for (key in bar_data[0]){
-        if (key != 'division')
-            keys.push(key);
-    }
-    console.log(keys)
-    // bar_data.forEach(function(data) {
-    //     data.swim
-    // })
-    console.log(bar_data)
+// // Define SVG area dimensions
+// var svgWidth = 960;
+// var svgHeight = 660;
+
+// // Define the chart's margins as an object
+// var chartMargin = {
+//   top: 30,
+//   right: 30,
+//   bottom: 30,
+//   left: 30
+// };
+
+// // Define dimensions of the chart area
+// var chartWidth = svgWidth - chartMargin.left - chartMargin.right;
+// var chartHeight = svgHeight - chartMargin.top - chartMargin.bottom;
+
+// // append the svg object to the body of the page
+// var svg = d3.select("#bar")
+//   .append("svg")
+//     .attr("width", svgWidth)
+//     .attr("height", svgHeight)
+
+
+// var chartGroup = svg.append("g")
+//     .attr("transform",
+//           `translate(${chartMargin.left}, ${chartMargin.top})`);
+
+// d3.json("/api/bar_chart").then((bar_data) => {  
     
-    // make each subgroup have its own color
-    colors = d3.scaleOrdinal()
-        .domain(keys)
-        .range(['#377eb8','#e41a1c','#4daf4a'])
-});
+//     // cast the total seconds for each leg to a number
+//     bar_data.forEach(function(data) {
+//         data.Swim = +data.Swim;
+//         data.Bike = +data.Bike;
+//         data.Run = +data.Run;
+//     });
+
+//     // create array for our keys
+//     var keys = [];
+//     for (key in bar_data[0]){
+//         if (key != 'Division')
+//             keys.push(key);
+//     }
+//     console.log(keys)
+//     console.log(bar_data)
+
+//     var subgroups = bar_data.columns.slice(1)
+    
+//     // Configure a band scale for the x axis
+//     var xScale = d3.scaleBand()
+//         .domain(keys)
+//         .range([0, width])
+
+//     svg.append('g')
+//         .attr("transform", `translate(0, ${chartHeight})`)
+//         .call(d3.axisbottom(xScale).tickSizeOuter(0));
+
+//     // need to figure out how to make y scale work with event handler to find max 
+//     var yScale = d3.scaleLinear()
+//         .domain([0, d3.max(bar_data, d => (d.Swim + d.Bike + d.Run))])
+//         .range([chartHeight, 0])
+
+//     svg.append('g')
+//         .call(d3.axisleft(yScale))
+    
+//     // make each subgroup have its own color
+//     colors = d3.scaleOrdinal()
+//         .domain(keys)
+//         .range(['#377eb8','#e41a1c','#4daf4a'])
+
+//     // stack the data
+//     var stackedData = d3.stack()
+//         .keys(subgroups)
+//         (bar_data)
+
+//     // show the bars
+
+// });
+
+
 
 //get it as seconds then map over data and convert seconds into format we WebAuthentication .scalelinear
 
