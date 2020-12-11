@@ -53,129 +53,58 @@ function updatePage() {
 }
 
 
-var myMap = L.map("world", {
-    center: [40.4637, 3.7492],
-    zoom: 2.25
-  });
+// map data pull
 
-L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
-    attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
-    tileSize: 512,
-    maxZoom: 18,
-    zoomOffset: -1,
-    id: "mapbox/streets-v11",
-    accessToken: API_KEY
-}).addTo(myMap);
+d3.json("/api/world_map").then((map_data) => {
+    var counts ={};
+    for(var i =0; i < map_data.length; i++) {
+        counts[map_data[i].Country] = 1 + (counts[map_data[i].Country] || 0);
+    }
+});
+function createMap(homeCountry) {
 
-d3.json("/api/race_stats").then((race_stats) => {      
-    console.log(race_stats);
+    var lightmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+        attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
+        maxZoom: 18,
+        id: "light-v10",
+        accessToken: API_KEY
+      });
 
-}) ;   
+    var baseMaps = {
+    "Light Map": lightmap
+    };
 
-var locations = race_stats(L.marker(["Latitude_average", "Longitude_average"], {
-    draggable: false,
-})).addTo(myMap);
+    var ovlerlayMaps = {
+    "Home Country": homeCountry
+    };
 
-d3.json("/api/race_stats").then((race_stats));
+    var map = L.map("world", {
+    center: [15.5594, -28.6731],
+    zoom: 2,
+    layers: [lightmap, homeCountry]
+    });
 
-var Alpha_3_code =[]; 
-    for (var i = 0; i <race_stats.length; i++){counts[race_stats[i].Alpha_3_code]; };
-    console.log(Alpha_3_code);
+    L.contol.layers(baseMaps, ovlerlayMaps, {
+    collapsed: false
+    }).addTo(map);
+}
 
-OR
+function createMarkers(response) {
 
-var locations = [];
+    var world_map = response.data.world_map;
 
-for (var i = 0; i <race_stats.length; i++) {
-    locations.push(
-        L.marker(race_stats[i].Latitude_average + Longitude_average)
-    )
-};    
-//   d3.json("./data/ironman.sqlite").then((data) => {      
-//     metaArray = data.metadata; 
-//     var id = "ID: ";
-//     //division  is the ID in the index
-//     var demotable = d3.select("#division");
-//     demotable.html("");
-//     for (var i = 0; i < metaArray.length; i++) {
-//         if (metaArray[i].id == selectedOption){
-//             demotable.append("h5"). text(id + selectedOption);
-//             var ethnicity = "ETHNICITY: " + metaArray[i].ethnicity;
-//             demotable.append("h5"). text(ethnicity);
-//             var gender = "GENDER: " + metaArray[i].gender;
-//             demotable.append("h5"). text(gender);
-//             var age = "AGE: " + metaArray[i].age;
-//             demotable.append("h5"). text(age);
-//             var location = "LOCATION: " + metaArray[i].location
-//             demotable.append("h5"). text(location);
-//             var bbtype = "BBTYPE: " + metaArray[i].bbtype
-//             demotable.append("h5"). text(bbtype);
-//             var wfreq = "WFREQ: " + metaArray[i].wfreq
-//             demotable.append("h5"). text(wfreq);
+    var countryMarkers = []
 
-//         }
-//     }
-//     updateCharts(selectedOption);
-// })    
-// }
+    for (var index = 0; index < world_map.length; index++) {
+        var worldMap = world_map[index];
 
-//Bar Chart Code
-// function updateCharts(id) {
-//     console.log("update Charts called for id: " + id)
-//     // Use D3 to select the dropdown menu
-      
-//     d3.json("/api/race_stats".then((race_stats) => { 
-//         raceArray = race_stats.Gender; 
-                            
-//                 var trace1 ={
-//                     x: Gender,
-//                     y: Division,
-//                     type: "bar",
-                    
-//                 };
+        var countryMarker = L.marker([worldMap.Latitude_average, worldMap.Longitude_average])
+            .bindPopup("<h3>" + worldMap.country + "<h3><h3>Total Competitors: " + counts +"</h3>");
 
-//                 var plotdata = [trace1];
-//                 var layout = {
-//                     title: "Hi"
-//                 };
-                        
-//                 Plotly.newPlot("bar", plotdata, layout);
+        countryMarkers.push(countryMarker);
+    }
 
-                // var desired_maximum_marker_size = 40;
+    createMap(L.layerGroup(countryMarkers));
+}
 
-                // var trace2 = {
-                //     x: otuId,
-                //     y: samplesData,
-                //     mode: 'markers',
-                //     marker: {
-                //          size: samplesData,
-                //          color: otuId,
-                //          colorscale: "Viridis",
-                //          sizeref: 2.0 * Math.max(samplesData) / (desired_maximum_marker_size**2)
-                //      }
-                // };
-                
-//                 var bubbledata = [trace2];
-                
-//                 var layout2 = {
-//                     title: 'Bacteria Cultures Per Sample',
-//                     xaxis: {
-//                         title: {
-//                           text: 'OTU ID'
-//                         }
-//                     },
-//                     showlegend: false
-                   
-//                 };
-                
-//                 Plotly.newPlot('bubble', bubbledata, layout2);
-
-
-//             }
-
-
-//             }
-        
-//     })
-// }
-   
+d3.json("/api/world_map", createMarkers);
