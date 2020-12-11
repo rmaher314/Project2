@@ -7,7 +7,8 @@ var tbody = d3.select("tbody");
 // Setting the intial INT run the drop down function.  
 function init(){
     // create dropdown
-    d3.json("/api/race_stats").then((race_stats) => {      
+    d3.json("/api/race_stats").then((race_stats) => {   
+        console.log(race_stats)   
         // divisionArray = race_stats.Division;
         var ddlItems = document.getElementById("selDataset")
         // create empty array for each unique division
@@ -94,6 +95,37 @@ function init(){
         Plotly.newPlot('bar', traceData, layout)
     });
 
+    var myMap = L.map("world", {
+        center: [15.5994, -28.6731],
+        zoom:2
+    });
+    
+    L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+      attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
+      tileSize: 512,
+      maxZoom: 18,
+      zoomOffset: -1,
+      id: "mapbox/streets-v11",
+      accessToken: API_KEY
+    }).addTo(myMap);
+
+    d3.json("/api/world_map").then((map_data) => {
+        var markers = L.markerClusterGroup();
+
+        for (var i = 0; i < map_data.length; i++) {
+            var latitude = map_data[i].Latitude_average
+            var longitude = map_data[i].Longitude_average
+
+            
+
+            if (latitude) {
+                markers.addLayer( L.marker([latitude, longitude])
+                    .bindPopup("<h3>Country: " + map_data[i].Country + "</h3>"))
+            }
+        }
+        myMap.addLayer(markers)
+    })
+    
 }  
 
 init();
@@ -206,53 +238,63 @@ function updateTopTenTable(opt){
 }
    
 
-function createMap() {
+// function createMap(racers) {
 
-    // Create the tile layer that will be the background of our map
-    var lightmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
-      attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
-      maxZoom: 18,
-      id: "light-v10",
-      accessToken: API_KEY
-    });
+//     // Create the tile layer that will be the background of our map
+//     var lightmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+//       attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
+//       maxZoom: 18,
+//       id: "light-v10",
+//       accessToken: API_KEY
+//     });
   
-    // Create a baseMaps object to hold the lightmap layer
-    var baseMaps = {
-      "Light Map": lightmap
-    };
-    // Create the map object with options
-    var map = L.map("map-id", {
-        center: [40.73, -74.0059],
-        zoom: 12,
-        layers: [lightmap, bikeStations]
-    });
+//     // Create a baseMaps object to hold the lightmap layer
+//     var baseMaps = {
+//       "Light Map": lightmap
+//     };
+//     // Create an overlayMaps object to hold the bikeStations layer
+//     var overlayMaps = {
+//         "Racers": racers
+//     };
+//     // Create the map object with options
+//     var map = L.map("map-id", {
+//         center: [40.73, -74.0059],
+//         zoom: 2,
+//         layers: [lightmap, racers]
+//     });
     
-    // Create a layer control, pass in the baseMaps and overlayMaps. Add the layer control to the map
-    L.control.layers(baseMaps, overlayMaps, {
-      collapsed: false
-    }).addTo(map);
-}
+//     // Create a layer control, pass in the baseMaps and overlayMaps. Add the layer control to the map
+//     L.control.layers(baseMaps, overlayMaps, {
+//       collapsed: false
+//     }).addTo(map);
+// }
 
-function createMarkers(response) {
+// function createMarkers(map_stats) {
+//     console.log(map_stats)
 
-    // Pull the "stations" property off of response.data
-    var stations = response.data.stations;
-  
-    // Initialize an array to hold bike markers
-    var bikeMarkers = [];
-  
-    // Loop through the stations array
-    for (var index = 0; index < stations.length; index++) {
-      var station = stations[index];
-  
-      // For each station, create a marker and bind a popup with the station's name
-      var bikeMarker = L.marker([station.lat, station.lon])
-        .bindPopup("<h3>" + station.name + "<h3><h3>Capacity: " + station.capacity + "</h3>");
-  
-      // Add the marker to the bikeMarkers array
-      bikeMarkers.push(bikeMarker);
-    }
-  
-    // Create a layer group made from the bike markers array, pass it into the createMap function
-    createMap(L.layerGroup(bikeMarkers));
-  }
+//         // var counts = {};
+//         // for(var i =0; i < map_stats.length; i++) {
+//         //     counts[map_stats[i].Country] = 1 + (counts[map_stats[i].Country] || 0);
+//         // }
+
+
+            
+//         // Initialize an array to hold bike markers
+//         var racerMarkers = [];
+    
+//         // Loop through the stations array
+//         map_stats.forEach(function(racer) {
+        
+//             // For each station, create a marker and bind a popup with the station's name
+//             var racerMarker = L.marker([racer.Latitude_average, racer.Longitude_average])
+//                 .bindPopup("<h3>" + racer.Country + "<h3>");
+        
+//             // Add the marker to the bikeMarkers array
+//             racerMarkers.push(racerMarker);
+//         });
+    
+//         // Create a layer group made from the bike markers array, pass it into the createMap function
+//         createMap(L.layerGroup(racerMarkers));
+    
+// }
+
