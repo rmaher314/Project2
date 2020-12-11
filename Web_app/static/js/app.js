@@ -124,17 +124,17 @@ function updateBarGraph(selectedOption) {
     // push all swim values to an array and convert seconds to hours
     var swim = []
     bar_data.forEach(function(data) {
-        swim.push(data.Swim / 3600)
+        swim.push(data.Swim)
     })
     // push all bike values to an array and convert seconds to hours
     var bike = []
     bar_data.forEach(function(data) {
-        bike.push(data.Bike / 3600)
+        bike.push(data.Bike)
     })
     // push all run values to an array and convert seconds to hours
     var run = []
     bar_data.forEach(function(data) {
-        run.push(data.Run / 3600)
+        run.push(data.Run)
     })
     // if females division is selected then display all female divisions
     if (selectedOption.charAt(0) === 'F') {
