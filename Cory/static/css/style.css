@@ -17,6 +17,10 @@ a {
   align-items: center;
 }
 
+#world {
+  height: 500px;
+}
+
 .jumbo{
   background-color: white;
 } 
