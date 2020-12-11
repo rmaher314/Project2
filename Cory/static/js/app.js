@@ -109,22 +109,22 @@ function init(){
       accessToken: API_KEY
     }).addTo(myMap);
 
-    // d3.json("/api/world_map").then((map_data) => {
-    //     var markers = L.markerClusterGroup();
+    d3.json("/api/world_map").then((map_data) => {
+        var markers = L.markerClusterGroup();
 
-    //     for (var i = 0; i < map_data.length; i++) {
-    //         var latitude = map_data[i].Latitude_average
-    //         var longitude = map_data[i].Longitude_average
+        for (var i = 0; i < map_data.length; i++) {
+            var latitude = map_data[i].Latitude_average
+            var longitude = map_data[i].Longitude_average
 
             
 
-    //         if (latitude) {
-    //             markers.addLayer( L.marker([latitude, longitude])
-    //                 .bindPopup("<h3>Country: " + map_data[i].Country + "</h3>"))
-    //         }
-    //     }
-    //     myMap.addLayer(markers)
-    // })
+            if (latitude) {
+                markers.addLayer( L.marker([latitude, longitude])
+                    .bindPopup("<h4>Participant: " + map_data[i].First_Name + ' ' + map_data[i].Last_Name + "</h4><h4>Country: " + map_data[i].Country + "</h4>"))
+            }
+        }
+        myMap.addLayer(markers)
+    })
     
 }  
 
