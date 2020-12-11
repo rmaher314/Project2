@@ -120,7 +120,7 @@ function init(){
 
             if (latitude) {
                 markers.addLayer( L.marker([latitude, longitude])
-                    .bindPopup("<h3>Country: " + map_data[i].Country + "</h3>"))
+                    .bindPopup("<h4>Participant: " + map_data[i].First_Name + ' ' + map_data[i].Last_Name + "</h4><h4>Country: " + map_data[i].Country + "</h4>"))
             }
         }
         myMap.addLayer(markers)
