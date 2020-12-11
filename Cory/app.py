@@ -41,27 +41,18 @@ def race_stats_api():
 # create route for bar chart data
 @app.route("/api/bar_chart/<selectedItem>")
 def bar_chart_api(selectedItem):
-    return f'SelectedItem: {selectedItem}'
+
     # create gender variable for filtering
     genderLetter = 'M'
     if selectedItem.startswith('F'):
         genderLetter = 'F'
-
+    
     # connect to our database
     conn = engine.connect()
     # return query results
-    return pd.read_sql("select Division, avg(Swim) as Swim, avg(Bike) as Bike, avg(Run) as Run FROM race_stats WHERE Division LIKE '%s%' GROUP BY Division ORDER BY Division" %genderLetter, conn).to_json(orient='records')
+    query = pd.read_sql(f"select Division, avg(Swim) as Swim, avg(Bike) as Bike, avg(Run) as Run FROM race_stats WHERE Division LIKE '{genderLetter}%' GROUP BY Division ORDER BY Division", conn).to_json(orient='records')
 
-    # if selectedItem.startswith('F'):
-    #     # connect to our database
-    #     conn = engine.connect()
-    #     # return query results
-    #     return pd.read_sql("select Division, avg(Swim) as Swim, avg(Bike) as Bike, avg(Run) as Run FROM race_stats WHERE Division LIKE 'F%' GROUP BY Division ORDER BY Division", conn).to_json(orient='records')
-    # else:
-    #     # connect to our database
-    #     conn = engine.connect()
-    #     # return query results
-    #     return pd.read_sql("select Division, avg(Swim) as Swim, avg(Bike) as Bike, avg(Run) as Run FROM race_stats WHERE Division LIKE 'M%' GROUP BY Division ORDER BY Division", conn).to_json(orient='records')
+    return(query)
 
 @app.route("/api/bar_chart/initial")
 def init_bar_chart():

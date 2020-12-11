@@ -26,11 +26,13 @@ nav {
   align-content: center;
 }
 
-.logo {
-  display: inline-block;
-  height: 75px;
-  width: 150px;
-  margin-right: 20px;
+.align {
+  text-align: left;
+}
+
+.navbar2{
+  background-color: #a80f0f;
+  text-decoration-color: #0c0c0c;;
 }
 
 h6 {
