@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>2019 Ironman World- About Us</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/d3Style.css') }}">
+
+
+ 
+   
+</head>
+
+<body>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand"></a> 
+        <!--<img src="Images/IronManLogoBug.jpg" alt="smalllogo" class="right"> -->
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li><a href="/">Home</a></li>
+        <li class="active"><a href="#">About the Team</a></li>
+    </ul>
+      
+    </div>
+  </div>
+</nav>
+<div class="container text-center">    
+  <h3>Here is something about our team. In case you wanted to know.</h3>
+</div>
+<div class="container">
+  <h2>Regan Maher</h2>
+  <ul class="list-group">
+    <li class="list-group-item">I am a mom of 3.</li>
+    <li class="list-group-item">I spent 3 days hiking in the Grand Canyon.</li>
+    <li class="list-group-item">I can whistle really loudly.</li>
+  </ul>
+</div>
+<div class="container">
+  <h2>Melissa Memel</h2>
+  <ul class="list-group">
+    <li class="list-group-item">I skydived in 2015.</li>
+    <li class="list-group-item">I speak fluent French and English.</li>
+    <li class="list-group-item">Being in the army my favorite thing was shooting machine guns.</li>
+  </ul>
+</div>
+<div class="container">
+  <h2>Cory Potter</h2>
+  <ul class="list-group">
+    <li class="list-group-item">I bought my first house at 22.</li>
+    <li class="list-group-item">I enjoy playing flag football.</li>
+    <li class="list-group-item">I have been skiing in the Swiss Alps.</li>
+  </ul>
+</div>
+<div class="container">
+  <h2>Lance Weston</h2>
+  <ul class="list-group">
+    <li class="list-group-item">I like to travel and the furthest place I have traveled is Mexico.</li>
+    <li class="list-group-item">I have an extensive burbon and cigar collection.</li>
+    <li class="list-group-item">I do not speak two languages, and the first one after a few drinks is questionable.</li>
+  </ul>
+</div>
+  
+
+
+<footer class="container-fluid text-center">
+  <p>2019 Ironman World Championship Analysis - Copyright 2020 - Produced by Regan Maher, Melissa Memel, Cory Potter, Lance Weston.</p>
+</footer>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+</body>
+</html>
