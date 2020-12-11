@@ -1,8 +1,12 @@
 var tbody = d3.select("tbody");
-
-// d3.json("/api/race_stats").then((race_stats) => {      
-//     console.log(race_stats);
-// }) ;   
+// declare myMap variable
+var myMap = L.map("world", {
+    center: [15.5994, -28.6731],
+    zoom:2
+});
+// declare markers variable
+var markers
+ 
 
 // Setting the intial INT run the drop down function.  
 function init(){
@@ -76,9 +80,6 @@ function init(){
             y: bike,
             name: 'Bike',
             type: 'bar',
-            // marker: {
-            //     opacity: 
-            // }
         }
         var trace3 = {
             x: ['F18-24','F25-29','F30-34','F35-39','F40-44','F45-49','F50-54','F55-59','F60-64','F65-69','F70-74','FPRO'],
@@ -93,10 +94,6 @@ function init(){
     
         Plotly.newPlot('bar', traceData, layout)
     });
-    var myMap = L.map("world", {
-        center: [15.5994, -28.6731],
-        zoom:2
-    });
     
     L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
       attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
@@ -106,10 +103,28 @@ function init(){
       id: "mapbox/streets-v11",
       accessToken: API_KEY
     }).addTo(myMap);
+
+    
+
+    d3.json("/api/world_map/F18-24").then((map_data) => {
+        markers = L.markerClusterGroup();
+
+        for (var i = 0; i < map_data.length; i++) {
+            var latitude = map_data[i].Latitude_average
+            var longitude = map_data[i].Longitude_average
+
+            
+
+            if (latitude) {
+                markers.addLayer( L.marker([latitude, longitude])
+                    .bindPopup("<h4>Participant: " + map_data[i].First_Name + ' ' + map_data[i].Last_Name + "</h4><h4>Divison: " + map_data[i].Division + "</h4><h4>Country: " + map_data[i].Country + "</h4>"))
+            }
+        }
+        myMap.addLayer(markers)
+    })
 }  
 
 init();
-
 
 
 // // Drop Down Menu Event Handler
@@ -125,8 +140,10 @@ function updatePage() {
 
   // call updateTopTenTable 
   updateTopTenTable(selectedOption); 
-  //TODO - call functions with selected data
+  // call updateBarGraph
   updateBarGraph(selectedOption);  
+  // call updateMap
+  updateMap(selectedOption);
   
 }
 
@@ -217,3 +234,27 @@ function updateTopTenTable(opt){
       }) ;
 }
    
+// Create updateMap function
+function updateMap(selectedOption) {
+    
+    d3.json("/api/world_map/" + selectedOption).then((map_data) => {
+        // remove layer upon drop down selection
+        myMap.removeLayer(markers)
+        // create markers group 
+        markers = L.markerClusterGroup();
+        
+        // loop through and add a marker for each participant in the Division selected
+        for (var i = 0; i < map_data.length; i++) {
+            var latitude = map_data[i].Latitude_average
+            var longitude = map_data[i].Longitude_average
+
+            
+
+            if (latitude) {
+                markers.addLayer( L.marker([latitude, longitude])
+                    .bindPopup("<h4>Participant: " + map_data[i].First_Name + ' ' + map_data[i].Last_Name + "</h4><h4>Divison: " + map_data[i].Division + "</h4><h4>Country: " + map_data[i].Country + "</h4>"))
+            }
+        }
+        myMap.addLayer(markers)
+    })
+}
