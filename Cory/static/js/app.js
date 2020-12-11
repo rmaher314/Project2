@@ -1,17 +1,12 @@
-//This was the original code the next line of code seems to work and out put with no errors.
-// d3.json("/api/race_stats", function(race_stats) { 
-//     console.log(race_stats);
-// });
 var tbody = d3.select("tbody");
 
-d3.json("/api/race_stats").then((race_stats) => {      
-    console.log(race_stats);
-
-}) ;   
+// d3.json("/api/race_stats").then((race_stats) => {      
+//     console.log(race_stats);
+// }) ;   
 
 // Setting the intial INT run the drop down function.  
-
 function init(){
+    // create dropdown
     d3.json("/api/race_stats").then((race_stats) => {      
         // divisionArray = race_stats.Division;
         var ddlItems = document.getElementById("selDataset")
@@ -98,6 +93,20 @@ function init(){
     
         Plotly.newPlot('bar', traceData, layout)
     });
+    // add map
+    var myMap = L.map("world", {
+        center: [15.5994, -28.6731],
+        zoom:2
+    });
+    
+    L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+      attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
+      tileSize: 512,
+      maxZoom: 18,
+      zoomOffset: -1,
+      id: "mapbox/streets-v11",
+      accessToken: API_KEY
+    }).addTo(myMap);
 }  
 
 init();
@@ -117,16 +126,15 @@ function updatePage() {
 
   // call updateTopTenTable 
   updateTopTenTable(selectedOption); 
-  // call updateBarGraph
-  updateBarGraph(selectedOption); 
+  //TODO - call functions with selected data
+  updateBarGraph(selectedOption);  
   
 }
 
 function updateBarGraph(selectedOption) {
-    console.log(selectedOption)
     // Create initial bar graph
   d3.json("/api/bar_chart/" + selectedOption).then((bar_data) => {
-    console.log(bar_data)
+
     // push all swim values to an array and convert seconds to hours
     var swim = []
     bar_data.forEach(function(data) {
@@ -142,7 +150,6 @@ function updateBarGraph(selectedOption) {
     bar_data.forEach(function(data) {
         run.push(data.Run)
     })
-    
     // if females division is selected then display all female divisions
     if (selectedOption.charAt(0) === 'F') {
         var trace_swim = {
@@ -210,184 +217,4 @@ function updateTopTenTable(opt){
         });  
       }) ;
 }
-
-//  look into color function to generate colors of the bar
-
-// 'M18-24','M25-29','M30-34','M35-39','M40-44','M45-49','M50-54','M55-59','M60-64','M65-69','M70-74','M75-79','M80-84','MPRO'
-
-
-// // Define SVG area dimensions
-// var svgWidth = 960;
-// var svgHeight = 660;
-
-// // Define the chart's margins as an object
-// var chartMargin = {
-//   top: 30,
-//   right: 30,
-//   bottom: 30,
-//   left: 30
-// };
-
-// // Define dimensions of the chart area
-// var chartWidth = svgWidth - chartMargin.left - chartMargin.right;
-// var chartHeight = svgHeight - chartMargin.top - chartMargin.bottom;
-
-// // append the svg object to the body of the page
-// var svg = d3.select("#bar")
-//   .append("svg")
-//     .attr("width", svgWidth)
-//     .attr("height", svgHeight)
-
-
-// var chartGroup = svg.append("g")
-//     .attr("transform",
-//           `translate(${chartMargin.left}, ${chartMargin.top})`);
-
-// d3.json("/api/bar_chart").then((bar_data) => {  
-    
-//     // cast the total seconds for each leg to a number
-//     bar_data.forEach(function(data) {
-//         data.Swim = +data.Swim;
-//         data.Bike = +data.Bike;
-//         data.Run = +data.Run;
-//     });
-
-//     // create array for our keys
-//     var keys = [];
-//     for (key in bar_data[0]){
-//         if (key != 'Division')
-//             keys.push(key);
-//     }
-//     console.log(keys)
-//     console.log(bar_data)
-
-//     var subgroups = bar_data.columns.slice(1)
-    
-//     // Configure a band scale for the x axis
-//     var xScale = d3.scaleBand()
-//         .domain(keys)
-//         .range([0, width])
-
-//     svg.append('g')
-//         .attr("transform", `translate(0, ${chartHeight})`)
-//         .call(d3.axisbottom(xScale).tickSizeOuter(0));
-
-//     // need to figure out how to make y scale work with event handler to find max 
-//     var yScale = d3.scaleLinear()
-//         .domain([0, d3.max(bar_data, d => (d.Swim + d.Bike + d.Run))])
-//         .range([chartHeight, 0])
-
-//     svg.append('g')
-//         .call(d3.axisleft(yScale))
-    
-//     // make each subgroup have its own color
-//     colors = d3.scaleOrdinal()
-//         .domain(keys)
-//         .range(['#377eb8','#e41a1c','#4daf4a'])
-
-//     // stack the data
-//     var stackedData = d3.stack()
-//         .keys(subgroups)
-//         (bar_data)
-
-//     // show the bars
-
-// });
-
-
-
-//get it as seconds then map over data and convert seconds into format we WebAuthentication .scalelinear
-
-
-
-
-
-
-//   d3.json("../../data/ironman.sqlite").then((data) => {      
-//     metaArray = data.metadata; 
-//     var id = "ID: ";
-//     //division  is the ID in the index
-//     var demotable = d3.select("#division");
-//     demotable.html("");
-//     for (var i = 0; i < metaArray.length; i++) {
-//         if (metaArray[i].id == selectedOption){
-//             demotable.append("h5"). text(id + selectedOption);
-//             var ethnicity = "ETHNICITY: " + metaArray[i].ethnicity;
-//             demotable.append("h5"). text(ethnicity);
-//             var gender = "GENDER: " + metaArray[i].gender;
-//             demotable.append("h5"). text(gender);
-//             var age = "AGE: " + metaArray[i].age;
-//             demotable.append("h5"). text(age);
-//             var location = "LOCATION: " + metaArray[i].location
-//             demotable.append("h5"). text(location);
-//             var bbtype = "BBTYPE: " + metaArray[i].bbtype
-//             demotable.append("h5"). text(bbtype);
-//             var wfreq = "WFREQ: " + metaArray[i].wfreq
-//             demotable.append("h5"). text(wfreq);
-
-//         }
-//     }
-//     updateCharts(selectedOption);
-// })    
-
-
-//Bar Chart Code
-// function updateCharts(id) {
-//     console.log("update Charts called for id: " + id)
-//     // Use D3 to select the dropdown menu
-      
-//     d3.json("/api/race_stats".then((race_stats) => { 
-//         raceArray = race_stats.Gender; 
-                            
-//                 var trace1 ={
-//                     x: Gender,
-//                     y: Division,
-//                     type: "bar",
-                    
-//                 };
-
-//                 var plotdata = [trace1];
-//                 var layout = {
-//                     title: "Hi"
-//                 };
-                        
-//                 Plotly.newPlot("bar", plotdata, layout);
-
-                // var desired_maximum_marker_size = 40;
-
-                // var trace2 = {
-                //     x: otuId,
-                //     y: samplesData,
-                //     mode: 'markers',
-                //     marker: {
-                //          size: samplesData,
-                //          color: otuId,
-                //          colorscale: "Viridis",
-                //          sizeref: 2.0 * Math.max(samplesData) / (desired_maximum_marker_size**2)
-                //      }
-                // };
-                
-//                 var bubbledata = [trace2];
-                
-//                 var layout2 = {
-//                     title: 'Bacteria Cultures Per Sample',
-//                     xaxis: {
-//                         title: {
-//                           text: 'OTU ID'
-//                         }
-//                     },
-//                     showlegend: false
-                   
-//                 };
-                
-//                 Plotly.newPlot('bubble', bubbledata, layout2);
-
-
-//             }
-
-
-//             }
-        
-//     })
-// }
    
