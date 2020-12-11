@@ -44,13 +44,29 @@ def race_stats_api():
 # divide everything by the fastest time ever
 
 # create route for bar chart data
-@app.route("/api/bar_chart")
-def bar_chart_api():
+@app.route("/api/bar_chart/<selectedItem>")
+def bar_chart_api(selectedItem):
+
+    # create gender variable for filtering
+    genderLetter = 'M'
+    if selectedItem.startswith('F'):
+        genderLetter = 'F'
+    
     # connect to our database
     conn = engine.connect()
     # return query results
-    return pd.read_sql("select Division, avg(Swim) as Swim, avg(Bike) as Bike, avg(Run) as Run FROM race_stats GROUP BY Division ORDER BY Division", conn).to_json(orient='records')
+    query = pd.read_sql(f"select Division, avg(Swim) as Swim, avg(Bike) as Bike, avg(Run) as Run FROM race_stats WHERE Division LIKE '{genderLetter}%' GROUP BY Division ORDER BY Division", conn).to_json(orient='records')
 
+    return(query)
+
+@app.route("/api/bar_chart/initial")
+def init_bar_chart():
+
+    # connect to our database
+    conn = engine.connect()
+    # return query results
+    return pd.read_sql("select Division, avg(Swim) as Swim, avg(Bike) as Bike, avg(Run) as Run FROM race_stats WHERE Division LIKE 'F%' GROUP BY Division ORDER BY Division", conn).to_json(orient='records')
+    
 # create route for top ten table
 @app.route("/api/top_ten_table/<selectedItem>")
 def table_api(selectedItem):

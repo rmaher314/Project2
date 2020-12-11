@@ -20,7 +20,7 @@ a {
 .jumbo{
   background-color: white;
 } 
-}
+
 
 nav {
   align-content: center;
@@ -33,7 +33,7 @@ nav {
   background-color: #a80f0f;
   text-decoration-color: #0c0c0c;;
 }
-}
+
 h6 {
   color: black;
   text-align: center;
@@ -87,4 +87,3 @@ footer {
 }
 
 }
-</style>
