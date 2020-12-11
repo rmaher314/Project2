@@ -3,6 +3,7 @@ var myMap = L.map("world", {
     center: [15.5994, -28.6731],
     zoom:2
 });
+var markers
 // d3.json("/api/race_stats").then((race_stats) => {      
 //     console.log(race_stats);
 // }) ;   
@@ -97,8 +98,6 @@ function init(){
     
         Plotly.newPlot('bar', traceData, layout)
     });
-
-    
     
     L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
       attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
@@ -109,8 +108,10 @@ function init(){
       accessToken: API_KEY
     }).addTo(myMap);
 
+    
+
     d3.json("/api/world_map/F18-24").then((map_data) => {
-        var markers = L.markerClusterGroup();
+        markers = L.markerClusterGroup();
 
         for (var i = 0; i < map_data.length; i++) {
             var latitude = map_data[i].Latitude_average
@@ -241,22 +242,12 @@ function updateTopTenTable(opt){
    
 
 function updateMap(selectedOption) {
-    // var myMap = L.map("world", {
-    //     center: [15.5994, -28.6731],
-    //     zoom:2
-    // });
     
-    // L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
-    //   attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
-    //   tileSize: 512,
-    //   maxZoom: 18,
-    //   zoomOffset: -1,
-    //   id: "mapbox/streets-v11",
-    //   accessToken: API_KEY
-    // }).addTo(myMap);
-
     d3.json("/api/world_map/" + selectedOption).then((map_data) => {
-        var markers = L.markerClusterGroup();
+        myMap.removeLayer(markers)
+        
+        markers = L.markerClusterGroup();
+        
 
         for (var i = 0; i < map_data.length; i++) {
             var latitude = map_data[i].Latitude_average
