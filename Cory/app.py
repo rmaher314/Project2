@@ -46,10 +46,11 @@ def bar_chart_api(selectedItem):
     genderLetter = 'M'
     if selectedItem.startswith('F'):
         genderLetter = 'F'
+
     # connect to our database
     conn = engine.connect()
     # return query results
-    return pd.read_sql("select Division, avg(Swim) as Swim, avg(Bike) as Bike, avg(Run) as Run FROM race_stats WHERE Division LIKE '%g' GROUP BY Division ORDER BY Division" %genderLetter, conn).to_json(orient='records')
+    return pd.read_sql("select Division, avg(Swim) as Swim, avg(Bike) as Bike, avg(Run) as Run FROM race_stats WHERE Division LIKE '%s%' GROUP BY Division ORDER BY Division" %genderLetter, conn).to_json(orient='records')
 
     # if selectedItem.startswith('F'):
     #     # connect to our database
