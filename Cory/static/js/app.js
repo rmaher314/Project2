@@ -109,7 +109,7 @@ function init(){
       accessToken: API_KEY
     }).addTo(myMap);
 
-    d3.json("/api/world_map").then((map_data) => {
+    d3.json("/api/world_map/F18-24").then((map_data) => {
         var markers = L.markerClusterGroup();
 
         for (var i = 0; i < map_data.length; i++) {
@@ -147,6 +147,8 @@ function updatePage() {
   updateTopTenTable(selectedOption); 
   //TODO - call functions with selected data
   updateBarGraph(selectedOption);  
+
+  updateMap(selectedOption);
   
 }
 
@@ -237,6 +239,39 @@ function updateTopTenTable(opt){
       }) ;
 }
    
+
+function updateMap(selectedOption) {
+    var myMap = L.map("world", {
+        center: [15.5994, -28.6731],
+        zoom:2
+    });
+    
+    L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+      attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
+      tileSize: 512,
+      maxZoom: 18,
+      zoomOffset: -1,
+      id: "mapbox/streets-v11",
+      accessToken: API_KEY
+    }).addTo(myMap);
+    
+    d3.json("/api/world_map/" + selectedOption).then((map_data) => {
+        var markers = L.markerClusterGroup();
+
+        for (var i = 0; i < map_data.length; i++) {
+            var latitude = map_data[i].Latitude_average
+            var longitude = map_data[i].Longitude_average
+
+            
+
+            if (latitude) {
+                markers.addLayer( L.marker([latitude, longitude])
+                    .bindPopup("<h4>Participant: " + map_data[i].First_Name + ' ' + map_data[i].Last_Name + "</h4><h4>Country: " + map_data[i].Country + "</h4>"))
+            }
+        }
+        myMap.addLayer(markers)
+    })
+}
 
 // function createMap(racers) {
 

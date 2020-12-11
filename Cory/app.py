@@ -69,12 +69,12 @@ def table_api(selectedItem):
     # return query results
     return pd.read_sql("SELECT Division_Rank, Division, First_Name, Last_Name, Country, Gender, Overall, Overall_Rank FROM race_stats WHERE Division = '%s' AND Division_Rank < 11 ORDER BY Division_Rank" %selectedItem, conn).to_json(orient='records')
 
-@app.route("/api/world_map")
-def map_api():
+@app.route("/api/world_map/<selectedItem>")
+def map_api(selectedItem):
     # connect to our database
     conn = engine.connect()
     # return query results
-    return pd.read_sql("SELECT BIB, Last_Name, First_Name, Country, Latitude_average, Longitude_average FROM race_stats", conn).to_json(orient='records')
+    return pd.read_sql("SELECT BIB, Last_Name, First_Name, Country, Latitude_average, Longitude_average FROM race_stats WHERE Division = '%s'" %selectedItem, conn).to_json(orient='records')
 
 if __name__ == '__main__':
     app.run(debug=True)
