@@ -94,7 +94,10 @@ function init(){
 
         var traceData = [trace1, trace2, trace3]
 
-        var layout = {barmode: 'stack'};
+        var layout = {
+            barmode: 'stack',
+            title: 'Average Division Times'
+        };
     
         Plotly.newPlot('bar', traceData, layout)
     });
@@ -217,7 +220,10 @@ function updateBarGraph(selectedOption) {
 
     var traceData = [trace_swim, trace_bike, trace_run]
 
-    var layout = {barmode: 'stack'};
+    var layout = {
+        barmode: 'stack',
+        title: 'Average Division Times'
+    };
 
     Plotly.newPlot('bar', traceData, layout)
   });
