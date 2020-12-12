@@ -42,6 +42,7 @@
   <h3>Here is something about our team. In case you wanted to know.</h3>
 </div>
 <div class="container">
+  <button id= "ReganButton">link to Regan</button>
   <h2>Regan Maher</h2>
   <ul class="list-group">
     <li class="list-group-item">I am a mom of 3.</li>
@@ -50,6 +51,7 @@
   </ul>
 </div>
 <div class="container">
+  <button id= "MelissaButton">link to Melissa</button> 
   <h2>Melissa Memel</h2>
   <ul class="list-group">
     <li class="list-group-item">I skydived in 2015.</li>
@@ -58,6 +60,7 @@
   </ul>
 </div>
 <div class="container">
+  <button id= "CoryButton">link to Cory</button>
   <h2>Cory Potter</h2>
   <ul class="list-group">
     <li class="list-group-item">I bought my first house at 22.</li>
@@ -66,12 +69,50 @@
   </ul>
 </div>
 <div class="container">
+  <button id= "LanceButton">link to Lance</button>
   <h2>Lance Weston</h2>
   <ul class="list-group">
     <li class="list-group-item">I like to travel and the furthest place I have traveled is Mexico.</li>
     <li class="list-group-item">I have an extensive burbon and cigar collection.</li>
     <li class="list-group-item">I do not speak two languages, and the first one after a few drinks is questionable.</li>
   </ul>
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
+  <script src="https://unpkg.com/tippy.js@6"></script>
+
+  <script>
+      tippy("#ReganButton", {
+          placement: "right",
+          arrow: true,
+          content: "https://www.linkedin.com/in/regan-maher-b57b2b7",
+          trigger: "click",
+          allowHTML: true,
+          interactive: true,
+      });
+      tippy("#MelissaButton", {
+        placement: "right",
+          arrow: true,
+          content: "Melissa's Linkedin",
+          trigger: "click",
+          allowHTML: true,
+          interactive: true,
+      });
+      tippy("#CoryButton", {
+        placement: "right",
+          arrow: true,
+          content: "https://www.linkedin.com/in/cory-potter-658168127",
+          trigger: "click",
+          allowHTML: true,
+          interactive: true,
+      });
+      tippy("#LanceButton", {
+          placement: "right",
+          arrow: true,
+          content: "https://www.linkedin.com/in/lance-weston-912a5548/",
+          trigger: "click",
+          allowHTML: true,
+          interactive: true,
+      });
+  </script>
 </div>
   
 
